@@ -79,10 +79,10 @@ class ConfigService {
 		}
 		$result = [];
 		foreach ($ids as $id) {
-			if (is_string($id) && preg_match('/^[a-zA-Z0-9_.\-]{1,64}$/', $id) === 1) {
-				$result[$id] = true;
+			if (is_string($id) && preg_match('/^[a-zA-Z0-9_.\-]{1,64}$/', $id) === 1 && !in_array($id, $result, true)) {
+				$result[] = $id;
 			}
 		}
-		return array_keys($result);
+		return $result;
 	}
 }

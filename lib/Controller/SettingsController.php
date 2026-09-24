@@ -24,8 +24,8 @@ class SettingsController extends Controller {
 
 	#[FrontpageRoute(verb: 'PUT', url: '/settings')]
 	public function save(
-		array $top = [],
-		array $waffle = [],
+		mixed $top = [],
+		mixed $waffle = [],
 		string $unassigned = 'top',
 		string $wafflePosition = 'end',
 		bool $waffleShowsAll = false,

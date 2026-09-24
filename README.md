@@ -18,12 +18,12 @@ No build step is needed.
 2. Enable the app: `occ app:enable classic_appmenu`
 3. Configure it under *Administration settings → Theming → Header app icons*.
 
-Supports Nextcloud 34 to 36.
+Supports Nextcloud 34 and hopefully 35.
 
 ## Settings
 
 - **Top bar / Waffle menu**: drag apps between the two lists and into the order you want. The ↑ ↓ ⇄ buttons do the same from the keyboard. This order replaces each user's personal app order.
-- **Apps not listed above**: where newly installed apps go, and apps restricted to groups you aren't in. Those apps don't appear in your lists, because the settings page can only show apps your own account can see.
+- **Apps not listed above**: where newly installed apps go, and apps restricted to groups you aren't in. Those apps don't appear in your lists, because the settings page can only show apps your own account can see. Saving assigns every app in the two lists explicitly, so this setting only affects apps that are not in the lists at that time. *Reset to default* clears all assignments.
 - **Position of the waffle menu**: before or after the icons.
 - **Also list the top bar apps in the waffle menu**: turns the waffle into a full app list.
 
@@ -44,12 +44,12 @@ On every logged-in page, this app loads a small script that runs before the waff
 3. Rewrites the `core/apps` initial state so the waffle shows only its own entries.
 4. Moves icons that don't fit on narrow screens into the waffle menu.
 5. Re-splits the list when another app sends a full list via `nextcloud:app-menu.refresh`, for example after an app is enabled.
-6. Hides the waffle button when the waffle has no entries.
+6. Hides the waffle button when the waffle has nothing to show. The waffle adds a tile of its own for admins ("More apps") and, if the app store link is enabled, for other users ("App store"), so it stays visible for them.
 
 Core files are not patched.
 
 ## Limitations
 
-- The script depends on core internals: the `#header-start__appmenu` mount point, the `core/apps` initial state, and the refresh event. A future Nextcloud release might change them.
-- When every app sits in the top bar, the waffle button is hidden, including the admin-only "More apps" tile. The apps management page is still reachable from the settings menu.
+- The script depends on core internals: the `#header-start__appmenu` mount point, the `core/apps` and `core/appStoreLinkShown` initial states, `OC.setNavigationCounter`, and the refresh event. A future Nextcloud release might change them.
+- When every app sits in the top bar, users without an "App store" tile see no waffle button at all. Admins always keep it for the "More apps" tile.
 - The "current app" name next to the waffle button only appears when the active app is a waffle entry. That is core behaviour, left unchanged.

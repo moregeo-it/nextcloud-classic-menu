@@ -110,8 +110,10 @@ function createItem(entry) {
 
 	item.append(handle, icon, name, actions)
 
+	let origin = null
 	item.addEventListener('dragstart', (event) => {
 		dragged = item
+		origin = { parent: item.parentElement, next: item.nextElementSibling }
 		item.classList.add('classic-appmenu-settings__item--dragging')
 		event.dataTransfer.effectAllowed = 'move'
 		event.dataTransfer.setData('text/plain', entry.id)
@@ -119,6 +121,10 @@ function createItem(entry) {
 	item.addEventListener('dragend', () => {
 		item.classList.remove('classic-appmenu-settings__item--dragging')
 		dragged = null
+		if (origin && (origin.parent !== item.parentElement || origin.next !== item.nextElementSibling)) {
+			changed()
+		}
+		origin = null
 	})
 	return item
 }
@@ -179,7 +185,6 @@ for (const list of Object.values(lists)) {
 	})
 	list.addEventListener('drop', (event) => {
 		event.preventDefault()
-		changed()
 	})
 }
 

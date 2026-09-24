@@ -56,7 +56,9 @@ const config = readState(APP_ID, 'config', {
 	wafflePosition: 'end',
 	waffleShowsAll: false,
 })
-const navigationActions = readState('core', 'navigationActions', [])
+const isAdmin = !!window._oc_isadmin
+const appStoreLinkShown = readState('core', 'appStoreLinkShown', false) === true
+const waffleHasOwnTile = isAdmin || appStoreLinkShown
 
 const header = document.getElementById('header')
 const headerStart = header?.querySelector('.header-start')
@@ -174,7 +176,7 @@ function layout(force = false) {
 
 function updateWaffle() {
 	const apps = waffleList()
-	const empty = apps.length === 0 && navigationActions.length === 0
+	const empty = apps.length === 0 && !waffleHasOwnTile
 	header.dataset.classicAppmenuWaffle = empty ? 'hidden' : (config.wafflePosition === 'start' ? 'start' : 'end')
 
 	if (!menuMounted) {
@@ -187,7 +189,14 @@ function updateWaffle() {
 		return
 	}
 	lastEmitted = signature
-	window._nc_event_bus?.emit(REFRESH_EVENT, { apps, [MARKER]: true })
+	eventBus().emit(REFRESH_EVENT, { apps, [MARKER]: true })
+}
+
+function eventBus() {
+	if (!window._nc_event_bus) {
+		throw new Error(`[${APP_ID}] The Nextcloud event bus is not available`)
+	}
+	return window._nc_event_bus
 }
 
 /**
@@ -228,8 +237,8 @@ function afterMenuMounted() {
 		}
 	}
 
-	window._nc_event_bus?.subscribe(REFRESH_EVENT, onRefresh)
-	updateWaffle()
+	eventBus().subscribe(REFRESH_EVENT, onRefresh)
+	layout(true)
 	new ResizeObserver(() => layout()).observe(nav)
 }
 
@@ -255,7 +264,7 @@ function init() {
 		afterMenuMounted()
 	} else {
 		// Core mounts the waffle menu on DOMContentLoaded, its listener was registered first
-		document.addEventListener('DOMContentLoaded', afterMenuMounted, { once: true })
+		window.addEventListener('DOMContentLoaded', afterMenuMounted, { once: true })
 	}
 }
 

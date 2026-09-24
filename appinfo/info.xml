@@ -21,7 +21,7 @@ und in welcher Reihenfolge.]]></description>
 	<bugs>https://github.com/moregeo-it/nextcloud-classic-menu/issues</bugs>
 	<repository>https://github.com/moregeo-it/nextcloud-classic-menu</repository>
 	<dependencies>
-		<nextcloud min-version="34" max-version="36"/>
+		<nextcloud min-version="34" max-version="35"/>
 	</dependencies>
 	<settings>
 		<admin>OCA\ClassicAppMenu\Settings\Admin</admin>
