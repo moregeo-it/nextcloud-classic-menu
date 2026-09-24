@@ -1,0 +1,195 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ *
+ * Styles of the top bar app icons, adapted from the Nextcloud 33 app menu
+ * (core/src/components/AppMenu*.vue).
+ */
+
+/* Order within the header: logo, [waffle], icons, [waffle] */
+#header .header-start > #nextcloud {
+	order: 0;
+}
+
+#header .header-start > .classic-appmenu {
+	order: 2;
+}
+
+#header[data-classic-appmenu-waffle="start"] .header-start > .app-menu {
+	order: 1;
+}
+
+#header[data-classic-appmenu-waffle="end"] .header-start > .app-menu {
+	order: 3;
+}
+
+#header[data-classic-appmenu-waffle="hidden"] .header-start > .app-menu {
+	display: none !important;
+}
+
+.classic-appmenu {
+	--classic-appmenu-entry-width: var(--header-height);
+	/* How much the hovered entry grows to show its full name */
+	--classic-appmenu-entry-growth: calc(var(--default-grid-baseline) * 4);
+	display: flex;
+	/* Take the remaining space of .header-start, the script measures it for the overflow */
+	flex: 1 1;
+	width: 0;
+	min-width: 0;
+	height: var(--header-height);
+}
+
+.classic-appmenu__list {
+	display: flex;
+	flex-wrap: nowrap;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.classic-appmenu__entry {
+	--classic-appmenu-font-size: 12px;
+	position: relative;
+	width: var(--classic-appmenu-entry-width);
+	height: var(--header-height);
+	flex-shrink: 0;
+}
+
+.classic-appmenu__entry[hidden] {
+	display: none;
+}
+
+.classic-appmenu__link {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	/* Shown directly on the header background */
+	color: var(--color-background-plain-text);
+	/* Space for the focus-visible outline */
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	margin: 2px;
+}
+
+.classic-appmenu__link:focus-visible {
+	outline: none;
+	box-shadow: inset 0 0 0 2px var(--color-background-plain-text);
+	border-radius: var(--border-radius-element, var(--border-radius-large));
+}
+
+.classic-appmenu__icon {
+	position: relative;
+	box-sizing: border-box;
+	width: 20px;
+	height: 20px;
+	font-size: var(--classic-appmenu-font-size);
+	transition: all var(--animation-quick) ease-in-out;
+}
+
+.classic-appmenu__image {
+	width: 20px;
+	height: 20px;
+	transition: margin 0.1s ease-in-out;
+	filter: var(--background-image-invert-if-bright);
+	mask: var(--header-menu-icon-mask);
+}
+
+.classic-appmenu__unread {
+	display: none;
+	position: absolute;
+	top: -3px;
+	inset-inline-end: -3px;
+	width: 8px;
+	height: 8px;
+	box-sizing: border-box;
+	border-radius: 50%;
+	border: 2px solid var(--color-text-error, var(--color-error));
+	transition: all 0.1s ease-in-out;
+}
+
+.classic-appmenu__entry--unread .classic-appmenu__unread {
+	display: block;
+}
+
+.classic-appmenu__label {
+	opacity: 0;
+	position: absolute;
+	top: 50%;
+	bottom: 0;
+	inset-inline-start: 50%;
+	display: block;
+	max-width: 100%;
+	transform: translateX(-50%);
+	font-size: var(--classic-appmenu-font-size);
+	color: var(--color-background-plain-text);
+	text-align: center;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	letter-spacing: -0.5px;
+	transition: all var(--animation-quick) ease-in-out;
+}
+
+body[dir="rtl"] .classic-appmenu__label {
+	transform: translateX(50%);
+}
+
+/* Active indicator: small line below the icon */
+.classic-appmenu__entry--active::before {
+	content: " ";
+	position: absolute;
+	bottom: 8px;
+	inset-inline-start: 50%;
+	display: block;
+	width: 10px;
+	height: 5px;
+	transform: translateX(-50%);
+	border-radius: 3px;
+	background-color: var(--color-background-plain-text);
+	pointer-events: none;
+	opacity: 1;
+	transition: all var(--animation-quick) ease-in-out;
+}
+
+body[dir="rtl"] .classic-appmenu__entry--active::before {
+	transform: translateX(50%);
+}
+
+.classic-appmenu__entry--active .classic-appmenu__label {
+	font-weight: bolder;
+}
+
+.classic-appmenu__entry:hover .classic-appmenu__label,
+.classic-appmenu__entry:focus-within .classic-appmenu__label {
+	font-weight: bold;
+	/* Let the hovered name use a bit of the neighbours' space */
+	max-width: calc(var(--classic-appmenu-entry-width) + var(--classic-appmenu-entry-growth));
+}
+
+/* Hovering the bar shows all names below the icons */
+.classic-appmenu__list:hover .classic-appmenu__icon,
+.classic-appmenu__list:focus-within .classic-appmenu__icon {
+	margin-block-end: 1lh;
+}
+
+.classic-appmenu__list:hover .classic-appmenu__label,
+.classic-appmenu__list:focus-within .classic-appmenu__label {
+	opacity: 1;
+}
+
+.classic-appmenu__list:hover .classic-appmenu__entry--active::before,
+.classic-appmenu__list:focus-within .classic-appmenu__entry--active::before,
+.classic-appmenu__list:hover .classic-appmenu__unread,
+.classic-appmenu__list:focus-within .classic-appmenu__unread {
+	opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.classic-appmenu__icon,
+	.classic-appmenu__image,
+	.classic-appmenu__label,
+	.classic-appmenu__entry--active::before {
+		transition: none;
+	}
+}

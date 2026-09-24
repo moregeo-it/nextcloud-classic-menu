@@ -1,0 +1,28 @@
+OC.L10N.register(
+    "classic_appmenu",
+    {
+        "Header app icons": "App-Symbole in der Kopfzeile",
+        "Choose which apps are shown as icons in the header and which ones go into the waffle menu. Drag the apps between the lists or use the buttons. The order applies to all users and overrides their personal app order.": "Wählen Sie aus, welche Apps als Symbole in der Kopfzeile angezeigt werden und welche ins App-Menü kommen. Ziehen Sie die Apps zwischen den Listen hin und her oder nutzen Sie die Schaltflächen. Die Reihenfolge gilt für alle Benutzer und ersetzt deren persönliche App-Reihenfolge.",
+        "Top bar": "Kopfzeile",
+        "Waffle menu": "App-Menü",
+        "Top bar icons that do not fit on narrow screens are moved into the waffle menu. The waffle menu is hidden when it has no entries.": "Symbole, die auf schmalen Bildschirmen nicht in die Kopfzeile passen, werden ins App-Menü verschoben. Das App-Menü wird ausgeblendet, wenn es keine Einträge hat.",
+        "Apps not listed above (newly installed apps and apps you do not have access to) are shown in the": "Nicht oben aufgeführte Apps (neu installierte Apps und Apps, auf die Sie keinen Zugriff haben) werden angezeigt in:",
+        "Position of the waffle menu": "Position des App-Menüs",
+        "Before the icons": "Vor den Symbolen",
+        "After the icons": "Nach den Symbolen",
+        "Also list the top bar apps in the waffle menu": "Apps aus der Kopfzeile zusätzlich im App-Menü anzeigen",
+        "Save": "Speichern",
+        "Reset to default": "Auf Standard zurücksetzen",
+        "Apps": "Apps",
+        "not available to you": "für Sie nicht verfügbar",
+        "Move {app} up": "{app} nach oben verschieben",
+        "Move {app} down": "{app} nach unten verschieben",
+        "Move {app} to the other list": "{app} in die andere Liste verschieben",
+        "Unsaved changes": "Ungespeicherte Änderungen",
+        "Saving …": "Speichern …",
+        "Saved. Reload the page to see the changes in the header.": "Gespeichert. Laden Sie die Seite neu, um die Änderungen in der Kopfzeile zu sehen.",
+        "Could not save the settings": "Die Einstellungen konnten nicht gespeichert werden",
+        "Reset to default. Reload the page to see the changes in the header.": "Auf Standard zurückgesetzt. Laden Sie die Seite neu, um die Änderungen in der Kopfzeile zu sehen.",
+        "Could not reset the settings": "Die Einstellungen konnten nicht zurückgesetzt werden"
+    },
+"nplurals=2; plural=(n != 1);");

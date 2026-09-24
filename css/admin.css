@@ -1,0 +1,124 @@
+/**
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+
+.classic-appmenu-settings__columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: calc(var(--default-grid-baseline) * 4);
+	margin-block: calc(var(--default-grid-baseline) * 4);
+}
+
+.classic-appmenu-settings__column {
+	flex: 1 1 300px;
+	max-width: 450px;
+}
+
+.classic-appmenu-settings__list {
+	min-height: calc(var(--default-clickable-area) * 2);
+	margin: 0;
+	padding: var(--default-grid-baseline);
+	list-style: none;
+	border: 2px dashed var(--color-border-dark);
+	border-radius: var(--border-radius-large);
+}
+
+.classic-appmenu-settings__item {
+	display: flex;
+	align-items: center;
+	gap: calc(var(--default-grid-baseline) * 2);
+	min-height: var(--default-clickable-area);
+	padding-inline: calc(var(--default-grid-baseline) * 2);
+	border-radius: var(--border-radius-element, var(--border-radius));
+	background-color: var(--color-main-background);
+	cursor: grab;
+}
+
+.classic-appmenu-settings__item:hover {
+	background-color: var(--color-background-hover);
+}
+
+.classic-appmenu-settings__item--dragging {
+	opacity: 0.5;
+}
+
+.classic-appmenu-settings__handle {
+	color: var(--color-text-maxcontrast);
+}
+
+.classic-appmenu-settings__icon {
+	flex-shrink: 0;
+	width: 20px;
+	height: 20px;
+	/* Masked, as app icons are usually white for the header */
+	background-color: var(--color-main-text);
+	mask: var(--icon-url) center / contain no-repeat;
+}
+
+.classic-appmenu-settings__name {
+	flex: 1 1 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.classic-appmenu-settings__name em {
+	color: var(--color-text-maxcontrast);
+}
+
+.classic-appmenu-settings__item-actions {
+	display: flex;
+	flex-shrink: 0;
+}
+
+.classic-appmenu-settings__button {
+	min-width: var(--default-clickable-area);
+	min-height: var(--default-clickable-area);
+	margin: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	color: var(--color-main-text);
+	font-size: 16px;
+}
+
+.classic-appmenu-settings__button:hover,
+.classic-appmenu-settings__button:focus-visible {
+	background-color: var(--color-background-dark);
+}
+
+.classic-appmenu-settings__option {
+	margin-block: calc(var(--default-grid-baseline) * 3);
+}
+
+.classic-appmenu-settings__option legend {
+	margin-block-end: var(--default-grid-baseline);
+}
+
+.classic-appmenu-settings__choice {
+	display: inline-flex;
+	align-items: center;
+	gap: calc(var(--default-grid-baseline) * 2);
+	min-height: var(--default-clickable-area);
+	margin-inline-end: calc(var(--default-grid-baseline) * 6);
+	cursor: pointer;
+}
+
+.classic-appmenu-settings__choice input {
+	width: 16px;
+	height: 16px;
+	margin: 0;
+	accent-color: var(--color-primary-element);
+	cursor: pointer;
+}
+
+.classic-appmenu-settings__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: calc(var(--default-grid-baseline) * 2);
+}
+
+.classic-appmenu-settings__status--error {
+	color: var(--color-text-error, var(--color-error));
+}

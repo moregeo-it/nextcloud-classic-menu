@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>classic_appmenu</id>
+	<name>Classic App Menu</name>
+	<summary>Brings the app icons back into the header</summary>
+	<summary lang="de">Bringt die App-Symbole zurück in die Kopfzeile</summary>
+	<description><![CDATA[Nextcloud 34 replaced the app icons in the header with a waffle menu.
+This app restores the icons in the top bar. Administrators can decide globally
+which apps are shown in the top bar, which ones go into the waffle menu,
+and in which order.]]></description>
+	<description lang="de"><![CDATA[Seit Nextcloud 34 sind die App-Symbole in der Kopfzeile durch ein App-Menü ersetzt.
+Diese App bringt die Symbole in die Kopfzeile zurück. Administratoren legen für alle
+Benutzer fest, welche Apps in der Kopfzeile und welche im App-Menü angezeigt werden
+und in welcher Reihenfolge.]]></description>
+	<version>1.0.0</version>
+	<licence>agpl</licence>
+	<author mail="mail@moregeo.it" homepage="https://moregeo.it">moreGeo</author>
+	<namespace>ClassicAppMenu</namespace>
+	<category>customization</category>
+	<bugs>https://github.com/moregeo-it/nextcloud-classic-menu/issues</bugs>
+	<repository>https://github.com/moregeo-it/nextcloud-classic-menu</repository>
+	<dependencies>
+		<nextcloud min-version="34" max-version="36"/>
+	</dependencies>
+	<settings>
+		<admin>OCA\ClassicAppMenu\Settings\Admin</admin>
+	</settings>
+</info>
