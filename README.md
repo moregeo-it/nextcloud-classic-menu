@@ -53,3 +53,10 @@ Core files are not patched.
 - The script depends on core internals: the `#header-start__appmenu` mount point, the `core/apps` and `core/appStoreLinkShown` initial states, `OC.setNavigationCounter`, and the refresh event. A future Nextcloud release might change them.
 - When every app sits in the top bar, users without an "App store" tile see no waffle button at all. Admins always keep it for the "More apps" tile.
 - The "current app" name next to the waffle button only appears when the active app is a waffle entry. That is core behaviour, left unchanged.
+
+## Releasing
+
+1. Set the new version in `appinfo/info.xml` and move the *Unreleased* entries in `CHANGELOG.md` under it.
+2. Tag the commit as `v<version>` and publish a GitHub release for the tag.
+
+The release workflow packages `classic_appmenu-<version>.tar.gz`, attaches it to the release and, when the `APP_PRIVATE_KEY` and `APPSTORE_TOKEN` secrets exist, signs the package and pushes it to the Nextcloud app store. A pre-release is pushed as a nightly.

@@ -14,12 +14,16 @@ Diese App bringt die Symbole in die Kopfzeile zurück. Administratoren legen fü
 Benutzer fest, welche Apps in der Kopfzeile und welche im App-Menü angezeigt werden
 und in welcher Reihenfolge.]]></description>
 	<version>1.0.0</version>
-	<licence>agpl</licence>
+	<licence>AGPL-3.0-or-later</licence>
 	<author mail="mail@moregeo.it" homepage="https://moregeo.it">moreGeo</author>
 	<namespace>ClassicAppMenu</namespace>
+	<documentation>
+		<admin>https://github.com/moregeo-it/nextcloud-classic-menu#settings</admin>
+	</documentation>
 	<category>customization</category>
 	<bugs>https://github.com/moregeo-it/nextcloud-classic-menu/issues</bugs>
 	<repository>https://github.com/moregeo-it/nextcloud-classic-menu</repository>
+	<screenshot>https://raw.githubusercontent.com/moregeo-it/nextcloud-classic-menu/main/screenshots/settings.png</screenshot>
 	<dependencies>
 		<nextcloud min-version="34" max-version="35"/>
 	</dependencies>

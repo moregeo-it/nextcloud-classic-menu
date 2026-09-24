@@ -1,0 +1,89 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+env:
+  APP_ID: classic_appmenu
+
+jobs:
+  package:
+    name: Package and publish
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.APP_PRIVATE_KEY != '' }}
+      HAS_TOKEN: ${{ secrets.APPSTORE_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: ${{ env.APP_ID }}
+
+      - name: Read appinfo/info.xml
+        id: app
+        run: |
+          VERSION=$(sed -n 's:.*<version>\(.*\)</version>.*:\1:p' "$APP_ID/appinfo/info.xml")
+          MIN=$(sed -n 's:.*<nextcloud min-version="\([0-9]*\)".*:\1:p' "$APP_ID/appinfo/info.xml")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "nextcloud=$MIN" >> "$GITHUB_OUTPUT"
+
+      - name: Check that the tag matches the version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$TAG" != "${{ steps.app.outputs.version }}" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match version ${{ steps.app.outputs.version }} in appinfo/info.xml"
+            exit 1
+          fi
+
+      - name: Remove files that are not part of the package
+        run: rm -rf "$APP_ID/.git" "$APP_ID/.github" "$APP_ID/.gitignore" "$APP_ID/screenshots"
+
+      - uses: shivammathur/setup-php@v2
+        if: env.HAS_KEY == 'true'
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Checkout Nextcloud server for signing
+        if: env.HAS_KEY == 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: nextcloud/server
+          ref: stable${{ steps.app.outputs.nextcloud }}
+          submodules: true
+          persist-credentials: false
+          path: nextcloud
+
+      - name: Sign the package
+        if: env.HAS_KEY == 'true'
+        run: |
+          echo "${{ secrets.APP_PRIVATE_KEY }}" > "$RUNNER_TEMP/$APP_ID.key"
+          curl -sSfL -o "$RUNNER_TEMP/$APP_ID.crt" "https://github.com/nextcloud/app-certificate-requests/raw/master/$APP_ID/$APP_ID.crt"
+          php nextcloud/occ integrity:sign-app --privateKey="$RUNNER_TEMP/$APP_ID.key" --certificate="$RUNNER_TEMP/$APP_ID.crt" --path="$GITHUB_WORKSPACE/$APP_ID"
+
+      - name: Create the tarball
+        run: tar -czf "$APP_ID-${{ steps.app.outputs.version }}.tar.gz" "$APP_ID"
+
+      - name: Attach the tarball to the release
+        id: attach
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.APP_ID }}-${{ steps.app.outputs.version }}.tar.gz
+          asset_name: ${{ env.APP_ID }}-${{ steps.app.outputs.version }}.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
+
+      - name: Push to the Nextcloud app store
+        if: env.HAS_KEY == 'true' && env.HAS_TOKEN == 'true'
+        uses: nextcloud-releases/nextcloud-appstore-push-action@a011fe619bcf6e77ddebc96f9908e1af4071b9c1 # v1.0.3
+        with:
+          app_name: ${{ env.APP_ID }}
+          appstore_token: ${{ secrets.APPSTORE_TOKEN }}
+          download_url: ${{ steps.attach.outputs.browser_download_url }}
+          app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
+          nightly: ${{ github.event.release.prerelease }}
