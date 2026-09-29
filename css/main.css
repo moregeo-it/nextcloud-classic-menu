@@ -185,6 +185,82 @@ body[dir="rtl"] .classic-appmenu__entry--active::before {
 	opacity: 0;
 }
 
+/*
+ * Unified search (core/src/components/UnifiedSearch/UnifiedSearchInput.vue), shown next to the
+ * notifications so it doesn't cover the icons. The size follows Nextcloud 35.
+ */
+
+/* Nextcloud 34 centers it over the whole header (position: absolute) */
+#header .unified-search-input:not(.unified-search-input--mobile) {
+	position: relative;
+	inset: auto;
+	margin-inline-end: var(--default-grid-baseline);
+	width: var(--unified-search-width, clamp(200px, 35vw, 700px));
+	max-width: none;
+}
+
+#header .unified-search-input__button {
+	height: var(--default-clickable-area);
+}
+
+/* Nextcloud 35 keeps its .header-center column centered by letting .header-end grow */
+#body-user #header > .header-end,
+#body-settings #header > .header-end {
+	flex: 0 1 auto;
+}
+
+/* Without enough space for the icons, show only the magnifier like core does below 512px */
+@media (max-width: 1023.98px) {
+	#header .unified-search-input:not(.unified-search-input--mobile) {
+		width: var(--default-clickable-area);
+		height: var(--default-clickable-area);
+	}
+
+	/* The results of Nextcloud 35 are anchored to the search, center them under the header */
+	#header .unified-search-menu {
+		position: static;
+	}
+
+	/* The input field of Nextcloud 35 grows over the icons while in use */
+	#header .unified-search-input:not(.unified-search-input--mobile) > :is(.unified-search-input__button, .unified-search-input__field) {
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline-end: 0;
+		width: 100%;
+	}
+
+	#header .unified-search-input:not(.unified-search-input--mobile) > .unified-search-input__field--active {
+		width: var(--unified-search-width, clamp(200px, 35vw, 700px));
+	}
+
+	#header :is(.unified-search-input__button, .unified-search-input__field:not(.unified-search-input__field--active)) {
+		overflow: hidden;
+		padding: 0;
+		background-color: transparent;
+		box-shadow: none;
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+		color: var(--color-background-plain-text);
+
+		&:is(:hover, :focus-visible) {
+			background-color: rgba(0, 0, 0, 0.15);
+		}
+
+		.unified-search-input__resting {
+			color: var(--color-background-plain-text);
+		}
+
+		/* Hidden visually only, it is the accessible name of the button in Nextcloud 34 */
+		.unified-search-input__label {
+			position: absolute;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+		}
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.classic-appmenu__icon,
 	.classic-appmenu__image,

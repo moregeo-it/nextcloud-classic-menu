@@ -45,6 +45,7 @@ On every logged-in page, this app loads a small script that runs before the waff
 4. Moves icons that don't fit on narrow screens into the waffle menu.
 5. Re-splits the list when another app sends a full list via `nextcloud:app-menu.refresh`, for example after an app is enabled.
 6. Hides the waffle button when the waffle has nothing to show. The waffle adds a tile of its own for admins ("More apps") and, if the app store link is enabled, for other users ("App store"), so it stays visible for them.
+7. Moves the search from the center of the header next to the notifications, so it doesn't cover the icons. On Nextcloud 34 it gets the size of the Nextcloud 35 search. Below 1024px it only shows the magnifier and grows over the icons while in use.
 
 Core files are not patched.
 
@@ -52,6 +53,7 @@ Core files are not patched.
 
 - The script depends on core internals: the `#header-start__appmenu` mount point, the `core/apps` and `core/appStoreLinkShown` initial states, `OC.setNavigationCounter`, and the refresh event. A future Nextcloud release might change them.
 - When every app sits in the top bar, users without an "App store" tile see no waffle button at all. Admins always keep it for the "More apps" tile.
+- The search is moved using the class names of `core/src/components/UnifiedSearch/UnifiedSearchInput.vue` and the header layout of Nextcloud 34 and 35. If a release changes them, the search may be centered again and cover icons.
 - The "current app" name next to the waffle button only appears when the active app is a waffle entry. That is core behaviour, left unchanged.
 
 ## Releasing

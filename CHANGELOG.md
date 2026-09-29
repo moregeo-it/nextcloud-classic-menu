@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The search no longer covers the app icons: it is shown next to the notifications, and only as a magnifier on smaller screens ([#1](https://github.com/moregeo-it/nextcloud-classic-menu/issues/1))
+
 ## [1.0.0] - 2026-09-24
 
 ### Added
