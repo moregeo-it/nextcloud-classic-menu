@@ -74,6 +74,7 @@ let lastEmitted = null
 
 let nav = null
 let list = null
+let space = null
 
 /**
  * Split the navigation entries of the current user into top bar and waffle menu.
@@ -163,7 +164,10 @@ function render() {
 function layout(force = false) {
 	const entries = [...list.children]
 	const entryWidth = parseFloat(getComputedStyle(nav).getPropertyValue('--classic-appmenu-entry-width')) || 50
-	const limit = Math.min(entries.length, Math.floor(nav.clientWidth / entryWidth))
+	// The icons only take the space they need, the remaining space of the header is in the spacer
+	const available = nav.getBoundingClientRect().width + space.getBoundingClientRect().width
+	// Tolerance for the rounding of the fractional widths
+	const limit = Math.min(entries.length, Math.floor(available / entryWidth + 0.01))
 	if (!force && limit === visibleCount) {
 		return
 	}
@@ -239,7 +243,10 @@ function afterMenuMounted() {
 
 	eventBus().subscribe(REFRESH_EVENT, onRefresh)
 	layout(true)
-	new ResizeObserver(() => layout()).observe(nav)
+	// The spacer changes with the header and the waffle button, the icons shrink once it is gone
+	const observer = new ResizeObserver(() => layout())
+	observer.observe(nav)
+	observer.observe(space)
 }
 
 function init() {
@@ -254,8 +261,10 @@ function init() {
 	list = document.createElement('ul')
 	list.className = 'classic-appmenu__list'
 	nav.append(list)
+	space = document.createElement('div')
+	space.className = 'classic-appmenu-space'
 	// Core replaces the placeholder with the waffle menu, the order is set via CSS
-	placeholder.after(nav)
+	placeholder.after(nav, space)
 
 	partition()
 	render()

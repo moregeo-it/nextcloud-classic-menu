@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The waffle menu directly follows the app icons when it is placed after them, instead of sitting at the end of the free space ([#3](https://github.com/moregeo-it/nextcloud-classic-menu/issues/3))
+
 ## [1.1.0] - 2026-09-30
 
 First official release, on GitHub and in the Nextcloud app store.
