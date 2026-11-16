@@ -4,10 +4,12 @@
  * Restores the app icons in the header next to the waffle menu of Nextcloud 34+.
  *
  * The waffle menu (core AppMenu.vue) reads its entries from the initial state
- * `core/apps` when it mounts on DOMContentLoaded and afterwards listens to the
- * `nextcloud:app-menu.refresh` event. This script runs before that (deferred
- * module), so it rewrites the initial state to the waffle entries only and
- * renders the top bar entries itself. Later changes are pushed via the event.
+ * `core/apps` when it mounts and afterwards listens to the
+ * `nextcloud:app-menu.refresh` event. Nextcloud 34 and 35 mount it on
+ * DOMContentLoaded, after this script (deferred module), so the script rewrites
+ * the initial state to the waffle entries only. Nextcloud 36 mounts it earlier,
+ * so the script sends the waffle entries via the event instead. The top bar
+ * entries are rendered by this script. Later changes are pushed via the event.
  */
 
 const APP_ID = 'classic_appmenu'
@@ -63,6 +65,8 @@ const waffleHasOwnTile = isAdmin || appStoreLinkShown
 const header = document.getElementById('header')
 const headerStart = header?.querySelector('.header-start')
 const placeholder = document.getElementById('header-start__appmenu')
+// Nextcloud 36+ mounts the waffle menu before this script runs, it replaces the placeholder
+const mountedMenu = placeholder ? null : headerStart?.querySelector(':scope > .app-menu')
 
 let allApps = readState('core', 'apps', [])
 let topApps = []
@@ -250,7 +254,7 @@ function afterMenuMounted() {
 }
 
 function init() {
-	if (!header || !headerStart || !placeholder) {
+	if (!header || !headerStart || !(placeholder || mountedMenu)) {
 		// Not the user layout, e.g. a public page
 		return
 	}
@@ -264,15 +268,17 @@ function init() {
 	space = document.createElement('div')
 	space.className = 'classic-appmenu-space'
 	// Core replaces the placeholder with the waffle menu, the order is set via CSS
-	placeholder.after(nav, space)
+	const anchor = placeholder ?? mountedMenu
+	anchor.after(nav, space)
 
 	partition()
 	render()
 
-	if (document.readyState === 'complete') {
+	if (mountedMenu || document.readyState === 'complete') {
+		// The waffle menu already shows all entries, the refresh event trims them
 		afterMenuMounted()
 	} else {
-		// Core mounts the waffle menu on DOMContentLoaded, its listener was registered first
+		// Nextcloud 34 and 35 mount the waffle menu on DOMContentLoaded, its listener was registered first
 		window.addEventListener('DOMContentLoaded', afterMenuMounted, { once: true })
 	}
 }

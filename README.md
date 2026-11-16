@@ -25,7 +25,7 @@ No build step is needed.
 2. Enable the app: `occ app:enable classic_appmenu`
 3. Configure it under *Administration settings → Theming → Header app icons*.
 
-Supports Nextcloud 34 and hopefully 35.
+Supports Nextcloud 34, 35 and hopefully 36.
 
 ## Settings
 
@@ -42,13 +42,13 @@ occ config:app:set classic_appmenu layout --value='{"top":["dashboard","files","
 
 ## How it works
 
-Nextcloud's waffle menu (`core/src/components/AppMenu.vue`) reads its entries from the initial state `core/apps` when it mounts on `DOMContentLoaded`. It then listens for the `nextcloud:app-menu.refresh` event.
+Nextcloud's waffle menu (`core/src/components/AppMenu.vue`, `core/src/components/AppMenu/AppMenu.vue` since Nextcloud 36) reads its entries from the initial state `core/apps` when it mounts. It then listens for the `nextcloud:app-menu.refresh` event. Nextcloud 34 and 35 mount it on `DOMContentLoaded`, Nextcloud 36 mounts it right when its own script runs.
 
-On every logged-in page, this app loads a small script that runs before the waffle mounts. The script:
+On every logged-in page, this app loads a small script. The script:
 
 1. Splits the user's navigation entries into top bar and waffle entries, based on the config.
 2. Draws the top bar icons next to the waffle button. The markup and styles are adapted from the Nextcloud 33 app menu, including the active indicator, labels on hover, and unread dots.
-3. Rewrites the `core/apps` initial state so the waffle shows only its own entries.
+3. Makes the waffle show only its own entries. On Nextcloud 34 and 35 it rewrites the `core/apps` initial state before the waffle mounts. On Nextcloud 36 the waffle is already mounted, so the script sends the entries via `nextcloud:app-menu.refresh`.
 4. Moves icons that don't fit on narrow screens into the waffle menu.
 5. Re-splits the list when another app sends a full list via `nextcloud:app-menu.refresh`, for example after an app is enabled.
 6. Hides the waffle button when the waffle has nothing to show. The waffle adds a tile of its own for admins ("More apps") and, if the app store link is enabled, for other users ("App store"), so it stays visible for them.
@@ -58,9 +58,9 @@ Core files are not patched.
 
 ## Limitations
 
-- The script depends on core internals: the `#header-start__appmenu` mount point, the `core/apps` and `core/appStoreLinkShown` initial states, `OC.setNavigationCounter`, and the refresh event. A future Nextcloud release might change them.
+- The script depends on core internals: the `#header-start__appmenu` mount point (or the `.app-menu` class of the mounted waffle on Nextcloud 36), the `core/apps` and `core/appStoreLinkShown` initial states, `OC.setNavigationCounter`, and the refresh event. A future Nextcloud release might change them.
 - When every app sits in the top bar, users without an "App store" tile see no waffle button at all. Admins always keep it for the "More apps" tile.
-- The search is moved using the class names of `core/src/components/UnifiedSearch/UnifiedSearchInput.vue` and the header layout of Nextcloud 34 and 35. If a release changes them, the search may be centered again and cover icons.
+- The search is moved using the class names of `core/src/components/UnifiedSearch/UnifiedSearchInput.vue` and the header layout of Nextcloud 34 to 36. If a release changes them, the search may be centered again and cover icons.
 - The "current app" name next to the waffle button only appears when the active app is a waffle entry. That is core behaviour, left unchanged.
 
 ## Releasing

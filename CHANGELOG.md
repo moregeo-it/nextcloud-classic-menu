@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for Nextcloud 36, which mounts the waffle menu before the app's script runs
+
 ## [1.1.1] - 2026-11-16
 
 ### Fixed
