@@ -12,6 +12,13 @@ Out of the box every app goes into the top bar, like before Nextcloud 34.
 
 ## Installation
 
+The app is available in the [Nextcloud app store](https://apps.nextcloud.com/apps/classic_appmenu).
+
+1. Install it under *Apps → Customization → Classic App Menu*, or with `occ app:install classic_appmenu`.
+2. Configure it under *Administration settings → Theming → Header app icons*.
+
+### From source
+
 No build step is needed.
 
 1. Copy this folder to `custom_apps/classic_appmenu` (or `apps/`) on your Nextcloud server.
