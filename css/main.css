@@ -5,13 +5,17 @@
  * (core/src/components/AppMenu*.vue).
  */
 
-/* Order within the header: logo, [waffle], icons, [waffle] */
+/* Order within the header: logo, [waffle], icons, [waffle], free space */
 #header .header-start > #nextcloud {
 	order: 0;
 }
 
 #header .header-start > .classic-appmenu {
 	order: 2;
+}
+
+#header .header-start > .classic-appmenu-space {
+	order: 4;
 }
 
 #header[data-classic-appmenu-waffle="start"] .header-start > .app-menu {
@@ -31,11 +35,16 @@
 	/* How much the hovered entry grows to show its full name */
 	--classic-appmenu-entry-growth: calc(var(--default-grid-baseline) * 4);
 	display: flex;
-	/* Take the remaining space of .header-start, the script measures it for the overflow */
-	flex: 1 1;
-	width: 0;
+	/* As wide as the visible icons, so the waffle menu can follow them directly */
+	flex: 0 1 auto;
 	min-width: 0;
 	height: var(--header-height);
+}
+
+/* Takes the remaining space of .header-start, the script measures it for the overflow */
+.classic-appmenu-space {
+	flex: 1 1 0;
+	min-width: 0;
 }
 
 .classic-appmenu__list {
